@@ -1,4 +1,5 @@
 import urllib2, json
+ip = raw_input("Please enter the ip address")
 key = "nyang"
 functions = ["Delete Image", "Delete Gallery", "Add Gallery", "Get Galleries", "Archive Year", "List Years"]
 def main():
@@ -21,12 +22,12 @@ def callAPI(url):
     return  json.loads(result)
 
 def getImages(gallery):
-    uri = "http://107.170.107.124:8001/getimagename/%s/%s"
+    uri = "http://" + ip "/getimagename/%s/%s"
     url = uri%(key, gallery)
     return callAPI(url)
 
 def getGalleries():
-    uri = "http://107.170.107.124:8001/getgalleries/%s"
+    uri = "http://" + ip "/getgalleries/%s"
     url = uri%(key)
     return callAPI(url)
 
@@ -53,7 +54,7 @@ def deleteImage():
     imageNum = raw_input("Please select the number of the image you would like:")
     confirm = raw_input("You want to delete " + images[imageNum] + "in" + galleries[galleryNum] + "(y/n)")
     if confirm.lower == "y":
-        uri = "http://107.170.107.124/deleteimage/%s/%s/%s"
+        uri = "http://" + ip "/deleteimage/%s/%s/%s"
         url = uri%(key, images[imageNum], galleries[galleryNum])
         print callApi(url)
 
