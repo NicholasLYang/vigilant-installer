@@ -1,20 +1,26 @@
 import urllib2, json
 ip = raw_input("Please enter the ip address ")
 key = "nyang"
-functions = ["Delete Image", "Delete Gallery", "Add Gallery", "Get Galleries", "Archive Year", "List Years"]
 
 def start():
     print "\nWelcome Mr. DW!"
     print "What would you like to do today?\n"
-    print "Choose the number of the option you'd like to select:"
     main()
 
 #Doesn't have greetings so that it can call itself
 def main():    
-    firstChoice = ['Delete Image', 'Delete Gallery', 'List Galleries', 'Archive Year']
-    goal = userInput(firstChoice)
+    functions = [
+        "Delete Image",
+        "List Galleries",
+        "Add Gallery",
+        "Delete Gallery",
+        "List Years",
+        "Archive Year"]
     
-    if goal == 0:
+    print "Choose the number of the option you'd like to select:"
+    goal = userInput(functions)
+    
+    if goal == 0: #delete image
         print "\nWhich gallery is the image in?"
         gallery = askGallery()
         print "\nWhich image would you like to delete?"
@@ -28,8 +34,22 @@ def main():
         else:
             print "Deletion canceled"
         print #empty line
+
+    elif goal == 1: #list galleries
+        galleries = getGalleries()
+        print "\nHere is a list of galleries:"
+        printList(galleries)
+
+    elif goal == 2: #add gallery #work in progress
+        """
+        print "\nWhat would you like to name your new gallery?"
+        name = raw_input()
+        #addGallery(name)
+        print "The " + name + " gallery has been created"
+        """
+        print "Feature coming soon"
         
-    elif goal == 1:
+    elif goal == 3: #delete gallery
         print "\nWhich gallery would you like to delete?"
         gallery = askGallery()
         print "\nAre you sure you want to delete %s? (y/n)"%(gallery)
@@ -40,17 +60,29 @@ def main():
             print deleteGallery(gallery)
         else:
             print "Deletion canceled"
-        print #empty line
+        print #empty line        
         
-    elif goal == 2:
-        galleries = getGalleries()
-        print "\nHere is a list of galleries:"
-        printList(galleries)
-        
-    elif goal == 3:
+    elif goal == 4: #list years #work in progress
+        """
+        years = getYears()
+        print "Here is a list of all the years archived:"
+        print years
+        """
         print "Feature coming soon"
+        
+    elif goal == 5: #archive year #work in progress
+        """
+        print "Are you sure would like to archive this year(%s)'s galleries? (y/n)"%(year)
+        confirm = raw_input()
 
-    #Finally asks if user would like to continue or exit
+        if isY(confirm):
+            archiveYear()
+        else:
+            print "Archive canceled"
+        """
+        print "Feature coming soon"
+        
+    #Asks at the end if user would like to continue or exit
     print "Continue? (y/n) "
     confirm = raw_input()
     if isY(confirm):
@@ -63,9 +95,6 @@ def printList(coll):
         print str(index) + " " + item
     print
    
-def printFunctions(): #what is the point of this
-    printList(functions)
-
 def callAPI(url):
    # print url
     request = urllib2.urlopen(url)
