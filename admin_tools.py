@@ -4,9 +4,6 @@ key = "nyang"
 functions = ["Delete Image", "Delete Gallery", "Add Gallery", "Get Galleries", "Archive Year", "List Years"]
 
 def start():
-
-    galleries = ["line","cat","dog","hat","man","child"]
-
     print "\nWelcome Mr. DW!"
     print "What would you like to do today?\n"
     print "Choose the number of the option you'd like to select:"
