@@ -13,8 +13,8 @@ mkdir site.git && cd site.git
 git init --bare
 cd hooks
 touch post-receive
-cat "#!/bin/sh" > post-receive
-cat "git --work-tree=/var/www/$domain --git-dir=/var/repo/site.git checkout -f" > post-receive
+printf  "#!/bin/sh" > post-receive
+printf  "git --work-tree=/var/www/$domain --git-dir=/var/repo/site.git checkout -f" > post-receive
 chmod +x post-receive
 
 
