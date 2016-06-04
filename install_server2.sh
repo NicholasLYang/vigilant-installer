@@ -1,11 +1,13 @@
 
-apt-get install libapache2-mod-wsgi python-dev apache2
+apt-get install libapache2-mod-wsgi python-dev apache2 
 a2enmod wsgi
 pip install virtualenv 
 cd
 virtualenv vigilantenv
 source venv/bin/activate
 pip install Flask
+echo "Adding config"
+touch /etc/apache2/sites-available/vigilant-web-gallery.conf
 cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
 <VirtualHost *:80>
 		ServerName 162.243.105.166
