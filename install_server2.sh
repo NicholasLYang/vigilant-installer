@@ -1,11 +1,11 @@
 
-apt-get install libapache2-mod-wsgi python-dev apache2 
+apt-get install libapache2-mod-wsgi python-dev apache2 &> /dev/null 
 a2enmod wsgi
-pip install virtualenv 
+pip install virtualenv &> /dev/null 
 cd
-virtualenv vigilantenv
-source venv/bin/activate
-pip install Flask
+virtualenv vigilantenv &> /dev/null 
+source vigilantenv/bin/activate 
+pip install Flask &> /dev/null 
 echo "Adding config"
 touch /etc/apache2/sites-available/vigilant-web-gallery.conf
 cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
@@ -40,7 +40,7 @@ from vigilant-web-gallery import app as application
 application.secret_key = "4U90jO1]70>L"
 EOF
 service apache2 restart
-
+service apache2 reload
 
 
 

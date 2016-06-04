@@ -1,13 +1,13 @@
 #!/bin/sh
 # assumes sshed into server with ROOT access
 mkdir /var/www
-apt-get update
-apt-get install Imagemagick python-pip sqlite emacs git
+apt-get update &> /dev/null 
+apt-get install Imagemagick python-pip sqlite emacs git &> /dev/null 
 mkdir /var/www/vigilant-web-gallery/
 cd /var
 mkdir repo && cd repo
 mkdir site.git && cd site.git
-git init --bare
+git init --bare 
 cd hooks
 touch post-receive
 printf  "#!/bin/sh" > post-receive
