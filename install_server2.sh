@@ -1,5 +1,5 @@
 
-apt-get install libapache2-mod-wsgi python-dev
+apt-get install libapache2-mod-wsgi python-dev apache2
 a2enmod wsgi
 pip install virtualenv 
 cd

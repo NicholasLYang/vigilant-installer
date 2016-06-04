@@ -4,8 +4,6 @@ mkdir /var/www
 apt-get update
 apt-get install Imagemagick python-pip sqlite emacs git
 mkdir /var/www/vigilant-web-gallery/
-cd /var/www/vigilant-web-gallery
-git clone https://github.com/daisyb/vigilant-web-gallery.git 
 cd /var
 mkdir repo && cd repo
 mkdir site.git && cd site.git
