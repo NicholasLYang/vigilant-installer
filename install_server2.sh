@@ -3,20 +3,20 @@ apt-get install libapache2-mod-wsgi python-dev
 a2enmod wsgi
 pip install virtualenv 
 cd
-virtualenv venv
+virtualenv vigilantenv
 source venv/bin/activate
 pip install Flask
-cat <<EOT >> /etc/apache2/sites-available/vigilant-web-gallery.conf
+cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
 <VirtualHost *:80>
-		ServerName hermes.stuycs.org
-		ServerAdmin root@hermes.stuycs.org
+		ServerName 162.243.105.166
+		ServerAdmin root@162.243.105.166
 		WSGIScriptAlias / /var/www/vigilant-web-gallery/vigilant-web-gallery.wsgi
-		<Directory /var/www/vigilant-web-gallery/>
+		<Directory /var/www/vigilant-web-gallery/vigilant-web-gallery/>
 			Order allow,deny
 			Allow from all
 		</Directory>
-		Alias /static /var/www/vigilant-web-gallery/static
-		<Directory /var/www/vigilant-web-gallery/static/>
+		Alias /static /var/www/vigilant-web-gallery/vigilant-web-gallery/static
+		<Directory /var/www/vigilant-web-gallery/vigilant-web-gallery/static/>
 			Order allow,deny
 			Allow from all
 		</Directory>
@@ -24,17 +24,21 @@ cat <<EOT >> /etc/apache2/sites-available/vigilant-web-gallery.conf
 		LogLevel warn
 		CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
-EOT
+EOF
 a2ensite vigilant-web-gallery
 cd /var/www/vigilant-web-gallery
-cat <<EOT >> vigilant-web-gallery.wsgi
+cat >  vigilant-web-gallery.wsgi <<EOF
 #!/usr/bin/python
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,"/var/www/vigilant-web-gallery/")
 
-from app import app as application
+from vigilant-web-gallery import app as application
 application.secret_key = "4U90jO1]70>L"
-EOT 
+EOF
+service apache2 restart
+
+
+
 
