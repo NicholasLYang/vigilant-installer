@@ -1,13 +1,12 @@
 #!/bin/sh
 # assumes sshed into server with ROOT access
 mkdir /var/www
-echo "Installing imagemagick, pythonmagick, pip, sqlite, git, emacs"
 apt-get update 
 apt-get install Imagemagick python-pythonmagick python-pip sqlite emacs git 
-echo "Making directories..."
+#echo "Making directories..."
 mkdir /var/www/vigilant-web-gallery/
 mkdir /var/www/vigilant-web-gallery/vigilant-web-gallery
-echo "Setting up remote"
+#echo "Setting up remote"
 cd /var
 mkdir repo && cd repo
 mkdir site.git && cd site.git
