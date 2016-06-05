@@ -1,15 +1,15 @@
-echo "Installing apache, mod-wsgi, python-dev"
-apt-get install libapache2-mod-wsgi python-dev apache2 &> /dev/null 
+#echo "Installing apache, mod-wsgi, python-dev"
+apt-get install libapache2-mod-wsgi python-dev apache2 
 a2enmod wsgi
-pip install virtualenv &> /dev/null 
+pip install virtualenv 
 cd /var/www/vigilant-web-gallery/vigilant-web-gallery
-echo "Creating virtualenv"
-virtualenv vigilantenv &> /dev/null 
+#echo "Creating virtualenv"
+virtualenv vigilantenv 
 source vigilantenv/bin/activate
-echo "Installing Flask"
-pip install Flask &> /dev/null 
-echo "Adding config"
-echo "What is the ip?"
+#echo "Installing Flask"
+pip install Flask 
+#echo "Adding config"
+#echo "What is the ip?"
 read ip
 touch /etc/apache2/sites-available/vigilant-web-gallery.conf
 cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
