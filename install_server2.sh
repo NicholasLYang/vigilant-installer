@@ -1,16 +1,20 @@
-
+echo "Installing apache, mod-wsgi, python-dev"
 apt-get install libapache2-mod-wsgi python-dev apache2 &> /dev/null 
 a2enmod wsgi
 pip install virtualenv &> /dev/null 
-cd
+cd /var/www/vigilant-web-gallery/vigilant-web-gallery
+echo "Creating virtualenv"
 virtualenv vigilantenv &> /dev/null 
-source vigilantenv/bin/activate 
+source vigilantenv/bin/activate
+echo "Installing Flask"
 pip install Flask &> /dev/null 
 echo "Adding config"
+echo "What is the ip?"
+read ip
 touch /etc/apache2/sites-available/vigilant-web-gallery.conf
 cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
 <VirtualHost *:80>
-		ServerName 162.243.105.166
+		ServerName $ip
 		ServerAdmin root@162.243.105.166
 		WSGIScriptAlias / /var/www/vigilant-web-gallery/vigilant-web-gallery.wsgi
 		<Directory /var/www/vigilant-web-gallery/vigilant-web-gallery/>
@@ -29,6 +33,7 @@ cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
 EOF
 a2ensite vigilant-web-gallery
 cd /var/www/vigilant-web-gallery
+touch vigilant-web-gallery.wsgi
 cat >  vigilant-web-gallery.wsgi <<EOF
 #!/usr/bin/python
 import sys
