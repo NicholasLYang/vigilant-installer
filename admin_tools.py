@@ -67,16 +67,15 @@ def main():
         print "Feature coming soon"
         
     elif goal == 5: #archive year #work in progress
-        """
-        print "Are you sure would like to archive this year(%s)'s galleries? (y/n)"%(year)
+        print "Which year would you like to archive?" 
+        year = raw_input() 
+        print "Are you sure you want to archive the galleries from (%s)? (y/n)"%(year)
         confirm = raw_input()
 
         if isY(confirm):
-            archiveYear()
+            return archiveYear(year)
         else:
             print "Archive canceled"
-        """
-        print "Feature coming soon"
         
     #Asks at the end if user would like to continue or exit
     print "Continue? (y/n) "
@@ -130,6 +129,14 @@ def createGallery(gallery):
     if out == "Error":
         return out
     return "The" + gallery + " has been created"
+
+def archiveGalleries(year):
+    uri = "http://" + ip + "/archivegalleries/%s/%s"
+    url = uri%(key, year) 
+    out = callAPI(url)
+    if out == "Error":
+        return out
+    return "The galleries from " + year +" have been archived" 
 
 def askGallery():
     galleries = getGalleries()
