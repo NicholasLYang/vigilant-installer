@@ -2,7 +2,7 @@
 This holds all the local end stuff for the running of vigilant-web-gallery. It contains the installer and the admin tools script.
 ## Installation
 This installer assumes that you are the root user of a blank Ubuntu 14.04 server. Installation is as simple as:
-~~~~ . install_local.sh ~~~~ 
+``` . install_local.sh ```
 To give a basic summary of the installation script, it sshes into the server, installs git, imagemagick, sqlite, pip, etc. then sets up the server as a git remote. Then it clones the repo in the local computer, pushes it to the server, and then deploys the Flask app using Apache and mod-wsgi. Right now the url is hermes.stuycs.org. The files are stored in /var/www/vigilantwebgallery/vigilantwebgallery.
 
 
