@@ -8,21 +8,19 @@ virtualenv vigilantenv
 source vigilantenv/bin/activate
 #echo "Installing Flask"
 pip install Flask 
-#echo "Adding config"
-#echo "What is the ip?"
 read ip
 touch /etc/apache2/sites-available/vigilant-web-gallery.conf
 cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
 <VirtualHost *:80>
 		ServerName $ip
-		ServerAdmin root@162.243.105.166
-		WSGIScriptAlias / /var/www/vigilant-web-gallery/vigilant-web-gallery.wsgi
-		<Directory /var/www/vigilant-web-gallery/vigilant-web-gallery/>
+		ServerAdmin nick@nicholasyang.com
+		WSGIScriptAlias / /var/www/vigilantwebgallery/vigilantwebgallery.wsgi
+		<Directory /var/www/vigilantwebgallery/vigilantwebgallery/>
 			Order allow,deny
 			Allow from all
 		</Directory>
-		Alias /static /var/www/vigilant-web-gallery/vigilant-web-gallery/static
-		<Directory /var/www/vigilant-web-gallery/vigilant-web-gallery/static/>
+		Alias /static /var/www/vigilantwebgallery/vigilantwebgallery/static
+		<Directory /var/www/vigilantwebgallery/vigilantwebgallery/static/>
 			Order allow,deny
 			Allow from all
 		</Directory>
@@ -31,17 +29,19 @@ cat >  /etc/apache2/sites-available/vigilant-web-gallery.conf <<EOF
 		CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 EOF
-a2ensite vigilant-web-gallery
-cd /var/www/vigilant-web-gallery
-touch vigilant-web-gallery.wsgi
-cat >  vigilant-web-gallery.wsgi <<EOF
+a2ensite vigilantwebgallery
+cd /var/www/vigilantwebgallery
+touch vigilantwebgallery.wsgi
+cat >  vigilantwebgallery.wsgi <<EOF
 #!/usr/bin/python
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
-sys.path.insert(0,"/var/www/vigilant-web-gallery/")
+sys.path.insert(0,"/var/www/vigilantwebgallery/")
+activate_this = '/var/www/vigilantwebgallery/vigilantwebgallery/vigilantenv/bin/activate_this.py'
+execfile(activate_this, dict(__file__=activate_this))
 
-from vigilant-web-gallery import app as application
+from vigilantwebgallery import app as application
 application.secret_key = "4U90jO1]70>L"
 EOF
 service apache2 restart

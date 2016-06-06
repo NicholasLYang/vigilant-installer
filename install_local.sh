@@ -4,6 +4,7 @@ ssh grimes "apt-get install git; git clone https://github.com/NicholasLYang/vigi
 cd ..
 # git clone git@github.com:daisyb/vigilant-web-gallery.git &> /dev/null 
 cd vigilant-web-gallery
+git remote rm vigilant-live
 git remote add vigilant-live ssh://grimes/var/repo/site.git
 touch README
 git add README
