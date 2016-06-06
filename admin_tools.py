@@ -41,14 +41,10 @@ def main():
         printList(galleries)
 
     elif goal == 2: #add gallery #work in progress
-        """
         print "\nWhat would you like to name your new gallery?"
         name = raw_input()
-        #addGallery(name)
-        print "The " + name + " gallery has been created"
-        """
-        print "Feature coming soon"
-        
+        response = createGallery(name)
+        print response
     elif goal == 3: #delete gallery
         print "\nWhich gallery would you like to delete?"
         gallery = askGallery()
@@ -126,6 +122,14 @@ def deleteGallery(gallery):
     if out == "Error":
         return out
     return gallery + " has been deleted"
+
+def createGallery(gallery):
+    uri = "http://" + ip + "/creategallery/%s/%s"
+    url = uri%(key, gallery)
+    out = callAPI(url)
+    if out == "Error":
+        return out
+    return "The" + gallery + " has been created"
 
 def askGallery():
     galleries = getGalleries()
