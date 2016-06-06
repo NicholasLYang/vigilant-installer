@@ -8,12 +8,11 @@ virtualenv vigilantenv
 source vigilantenv/bin/activate
 #echo "Installing Flask"
 pip install Flask 
-read ip
 touch /etc/apache2/sites-available/vigilantwebgallery.conf
 cat >  /etc/apache2/sites-available/vigilantwebgallery.conf <<EOF
 <VirtualHost *:80>
-		ServerName $ip
-		ServerAdmin nick@nicholasyang.com
+		ServerName hermes.stuycs.org
+		ServerAdmin dw@stuycs.org
 		WSGIScriptAlias / /var/www/vigilantwebgallery/vigilantwebgallery.wsgi
 		<Directory /var/www/vigilantwebgallery/vigilantwebgallery/>
 			Order allow,deny
