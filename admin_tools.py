@@ -41,14 +41,10 @@ def main():
         printList(galleries)
 
     elif goal == 2: #add gallery #work in progress
-        """
         print "\nWhat would you like to name your new gallery?"
         name = raw_input()
-        #addGallery(name)
-        print "The " + name + " gallery has been created"
-        """
-        print "Feature coming soon"
-        
+        response = createGallery(name)
+        print response
     elif goal == 3: #delete gallery
         print "\nWhich gallery would you like to delete?"
         gallery = askGallery()
@@ -71,16 +67,15 @@ def main():
         print "Feature coming soon"
         
     elif goal == 5: #archive year #work in progress
-        """
-        print "Are you sure would like to archive this year(%s)'s galleries? (y/n)"%(year)
+        print "Which year would you like to archive?" 
+        year = raw_input() 
+        print "Are you sure you want to archive the galleries from (%s)? (y/n)"%(year)
         confirm = raw_input()
 
         if isY(confirm):
-            archiveYear()
+            return archiveYear(year)
         else:
             print "Archive canceled"
-        """
-        print "Feature coming soon"
         
     #Asks at the end if user would like to continue or exit
     print "Continue? (y/n) "
@@ -126,6 +121,22 @@ def deleteGallery(gallery):
     if out == "Error":
         return out
     return gallery + " has been deleted"
+
+def createGallery(gallery):
+    uri = "http://" + ip + "/creategallery/%s/%s"
+    url = uri%(key, gallery)
+    out = callAPI(url)
+    if out == "Error":
+        return out
+    return "The" + gallery + " has been created"
+
+def archiveGalleries(year):
+    uri = "http://" + ip + "/archivegalleries/%s/%s"
+    url = uri%(key, year) 
+    out = callAPI(url)
+    if out == "Error":
+        return out
+    return "The galleries from " + year +" have been archived" 
 
 def askGallery():
     galleries = getGalleries()
