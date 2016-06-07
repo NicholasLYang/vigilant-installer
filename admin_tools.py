@@ -195,6 +195,8 @@ def userInput(options):
         print "Please submit a number " + validVals[0] + "-" + validVals[-1]
         printList(options)
         inpt = raw_input()
+        if inpt == "exit":
+            exit()
     return int(inpt)
 
         
