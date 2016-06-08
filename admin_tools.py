@@ -45,7 +45,7 @@ def main():
         print "\nHere is a list of galleries:"
         printList(galleries)
 
-    elif goal == 2: #add gallery #work in progress
+    elif goal == 2: #add gallery
         print "\nWhat would you like to name your new gallery?"
         name = raw_input()
         print createGallery(name)
@@ -63,22 +63,22 @@ def main():
         else:
             print "Deletion canceled"
         
-    elif goal == 4: #list years #work in progress
-        """
-        years = getYears()
-        print "Here is a list of all the years archived:"
-        print years
-        """
-        print "Feature coming soon"
+    elif goal == 4: #list years 
+        print "Archived year:"
+        print printList(getArchivedYears())
+        print "Unarchived years:"
+        print printList(getUnarchivedYears())
         
     elif goal == 5: #archive year 
         print "Which year would you like to archive?" 
-        year = raw_input()
+        years = getArchivedYears()
+        year = userInput(years)
         print archiveGalleries(year)
         
     elif goal == 6: #unarchives year
         print "Which year would you like to unarchive?"
-        year = raw_input()
+        years = getUnarchivedYears()
+        year = userInput(years)
         print unarchiveGalleries(year)
         
     #Asks at the end if user would like to continue or exit
@@ -164,6 +164,16 @@ def unarchiveGalleries(year):
         return "\nThe galleries from " + year +" have been unarchived"
     print out
     return "Error, galleries not unarchived"
+
+def getUarchivedYears():
+    uri = "http://" + ip + "/getVisibleGalleries/%s"
+    url = uri%(key) 
+    return callAPI(url, True)
+
+def getArchivedYears():
+    uri = "http://" + ip + "/getInvisibleGalleries/%s"
+    url = uri%(key) 
+    return callAPI(url, True)
     
 def askGallery():
     galleries = getGalleries()
