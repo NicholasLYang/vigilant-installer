@@ -64,20 +64,20 @@ def main():
             print "Deletion canceled"
         
     elif goal == 4: #list years 
-        print "Archived year:"
+        print "Archived years:"
         print printList(getArchivedYears())
         print "Unarchived years:"
         print printList(getUnarchivedYears())
         
     elif goal == 5: #archive year 
         print "Which year would you like to archive?" 
-        years = getArchivedYears()
+        years = getUnarchivedYears()
         year = userInput(years)
         print archiveGalleries(year)
         
     elif goal == 6: #unarchives year
         print "Which year would you like to unarchive?"
-        years = getUnarchivedYears()
+        years = getArchivedYears()
         year = userInput(years)
         print unarchiveGalleries(year)
         
@@ -92,7 +92,7 @@ def main():
 
 def printList(coll):
     for index, item in enumerate(coll):
-        print str(index) + " " + item
+        print str(index) + " " + str(item)
     print
 
 #sendingData is supposed to determine whether the
@@ -165,7 +165,7 @@ def unarchiveGalleries(year):
     print out
     return "Error, galleries not unarchived"
 
-def getUarchivedYears():
+def getUnarchivedYears():
     uri = "http://" + ip + "/getVisibleGalleries/%s"
     url = uri%(key) 
     return callAPI(url, True)
