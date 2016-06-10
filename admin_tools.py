@@ -2,10 +2,11 @@ import urllib2, json
 from sys import exit
 
 ip = raw_input("Please enter the ip address ")
-key = "nyang"
+key = "mrdwisawesome"
 
 def start():
     print "If at any time you wish to leave, type 'exit'"
+    print "Type 'menu' to return to main menu"
     print "\nWelcome Mr. DW!"
     print "What would you like to do today?\n"
     main()
@@ -102,7 +103,7 @@ def callAPI(url,sendingData):
     request = urllib2.urlopen(url)
     result = request.read()
     if result == "Error":
-        print "Error, invalid key"
+        print "Error, invalid submission and/or key"
         exit()
     if (sendingData):
         return  json.loads(result)
@@ -199,6 +200,8 @@ def userInput(options):
     inpt = raw_input()
     if inpt == "exit":
         exit()
+    if inpt == "menu":
+        main()
     validVals = strRange(len(options))
     while( inpt not in validVals ):
         print "\nI'm sorry, DW. I'm afraid I can't do that."
@@ -207,6 +210,8 @@ def userInput(options):
         inpt = raw_input()
         if inpt == "exit":
             exit()
+        if inpt == "menu":
+            main()
     return int(inpt)
 
         
