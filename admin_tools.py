@@ -1,5 +1,6 @@
 import urllib2, json
 from sys import exit
+from datetime import datetime
 
 ip = raw_input("Please enter the ip address ")
 key = "mrdwisawesome"
@@ -27,22 +28,24 @@ def main():
     goal = userInput(functions)
     
     if goal == 0: #delete image
+        year = askYear()
         print "\nWhich gallery is the image in?"
-        gallery = askGallery()
+        gallery = askGallery(year)
         print "\nWhich image would you like to delete?"
-        images = getImages(gallery)
+        images = getImages(year, gallery)
         image = images[ userInput(images) ]
         confirm = raw_input("\nAre you sure want to delete %s in %s? (y/n) "%(image,gallery))
 
         if isY(confirm):
             print #empty line
             print "Deleting . . ."
-            print deleteImage(image, gallery)
+            print deleteImage(year, image, gallery)
         else:
             print "Deletion canceled"
 
     elif goal == 1: #list galleries
-        galleries = getGalleries()
+        year = askYear()
+        galleries = getGalleries(year)
         print "\nHere is a list of galleries:"
         printList(galleries)
 
@@ -52,23 +55,21 @@ def main():
         print createGallery(name)
         
     elif goal == 3: #delete gallery
+        year = askYear()
         print "\nWhich gallery would you like to delete?"
-        gallery = askGallery()
+        gallery = askGallery(year)
         print "\nAre you sure you want to delete %s? (y/n)"%(gallery)
         confirm = raw_input()
 
         if isY(confirm):
             print #empty line
             print "Deleting . . ."
-            print deleteGallery(gallery)
+            print deleteGallery(year, gallery)
         else:
             print "Deletion canceled"
         
-    elif goal == 4: #list years 
-        print "Archived years:"
-        print printList(getArchivedYears())
-        print "Unarchived years:"
-        print printList(getUnarchivedYears())
+    elif goal == 4: #list 
+        print printList(getYears())
         
     elif goal == 5: #archive year 
         print "Which year would you like to archive?" 
@@ -84,7 +85,7 @@ def main():
         
     #Asks at the end if user would like to continue or exit
     print #empty line
-    print "Continue? (y/n) "
+    print "Would you like to do anything else? (y/n) "
     confirm = raw_input()
     if isY(confirm):
         print #new line
@@ -102,35 +103,45 @@ def callAPI(url,sendingData):
    # print url
     request = urllib2.urlopen(url)
     result = request.read()
-    if result == "Error":
-        print "Error, invalid submission and/or key"
+    if result == "Error, invalid key":
+        print result
         exit()
     if (sendingData):
         return  json.loads(result)
     return result
 
-def getImages(gallery):
-    uri = "http://" + ip + "/getimagename/%s/%s"
-    url = uri%(key, gallery)
-    return callAPI(url, True)
+def getYears():
+    uri = "http://" + ip + "/getYears/%s"
+    url = uri%(key)
+    return callAPI(url, True)    
 
-def getGalleries():
+def getCurrentGalleries():
     uri = "http://" + ip + "/getgalleries/%s"
     url = uri%(key)
     return callAPI(url, True)
-    
-def deleteImage(img, gallery):
-    uri = "http://" + ip + "/deleteimage/%s/%s/%s"
-    url = uri%(key, gallery, img)
+
+def getGalleries(year):
+    uri = "http://" + ip + "/getGalleriesInYear/%s/%s"
+    url = uri%(key, year)
+    return callAPI(url, True)
+
+def getImages(year, gallery):
+    uri = "http://" + ip + "/getimagename/%s/%s/%s"
+    url = uri%(key, year, gallery)
+    return callAPI(url, True) 
+
+def deleteImage(year, img, gallery):
+    uri = "http://" + ip + "/deleteimage/%s/%s/%s/%s"
+    url = uri%(key, year, gallery, img)
     out = callAPI(url, False)
     if out == "success":
         return "%s in %s has been deleted"%(img, gallery)
     print out
     return "Error, image not deleted"
 
-def deleteGallery(gallery):
-    uri = "http://" + ip + "/deletegallery/%s/%s"
-    url = uri%(key, gallery)
+def deleteGallery(year, gallery):
+    uri = "http://" + ip + "/deletegallery/%s/%s/%s"
+    url = uri%(key, year, gallery)
     out = callAPI(url, False)
     if out == "success":
         return gallery + " has been deleted"
@@ -138,8 +149,9 @@ def deleteGallery(gallery):
     return "Error, gallery not deleted"
 
 def createGallery(gallery):
-    uri = "http://" + ip + "/creategallery/%s/%s"
-    url = uri%(key, gallery)
+    year = str(datetime.now().year)
+    uri = "http://" + ip + "/creategallery/%s/%s/%s"
+    url = uri%(key, year, gallery)
     out = callAPI(url, False)
     if out == "success":
         return "\n" + gallery + " has been created"
@@ -175,9 +187,15 @@ def getArchivedYears():
     uri = "http://" + ip + "/getInvisibleGalleries/%s"
     url = uri%(key) 
     return callAPI(url, True)
-    
-def askGallery():
-    galleries = getGalleries()
+
+def askYear():
+    print "\nWhat year is this from?"
+    years = getYears()
+    year = userInput(years)
+    return years[year]
+
+def askGallery(year):
+    galleries = getGalleries(year)
     galNum = userInput(galleries)
     return galleries[galNum]
 
