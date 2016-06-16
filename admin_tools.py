@@ -20,8 +20,7 @@ def main():
         "Create Gallery",
         "Delete Gallery",
         "List Years",
-        "Archive Year",
-        "Unarchive Year"
+        "Visibility Options",
     ]
     
     print "Choose the number of the option you'd like to select:"
@@ -71,18 +70,67 @@ def main():
     elif goal == 4: #list 
         print printList(getYears())
         
-    elif goal == 5: #archive year 
-        print "Which year would you like to archive?" 
-        years = getUnarchivedYears()
-        year = userInput(years)
-        print archiveGalleries(year)
-        
-    elif goal == 6: #unarchives year
-        print "Which year would you like to unarchive?"
-        years = getArchivedYears()
-        year = userInput(years)
-        print unarchiveGalleries(year)
-        
+    elif goal == 5: #Visibility options 
+        options = [
+            "List Visible Galleries",
+            "List Invisible Galleries",
+            "Make Gallery Invisible",
+            "Make Gallery Visible",
+            "Make Entire Year Invisible",
+            "Make Entire Year Visible"
+            ]
+        print "Choose the number of the option you'd like to select:"
+        choice = userInput(options)
+        if choice == 0: #list visible
+            year = askPrevYears()
+            print "\nVisible galleries from " + str(year)
+            printList(getVisible(year))
+        elif choice == 1: #list invisible
+            year = askPrevYears()
+            print "\nInvisible galleries from " + str(year)
+            printList(getInvisible(year))
+        elif choice == 2: #make gal invis
+            year = askPrevYears()
+            gals = getVisible(year)
+            if len(gals) != 0:
+                print "\nWhich gallery would you like to make invisible?"
+                gallery = userInput(gals)
+                print makeGalInvisible(year, gals[gallery])
+            else:
+                print "There are no visible galleries from " + str(year) 
+        elif choice == 3: #make gal vis
+            year = askPrevYears()
+            gals = getInvisible(year)
+            if len(gals) != 0:
+                print "\nWhich gallery would you like to make visible?"
+                gallery = userInput(years)
+                print makeGalVisible(year, gals[gallery])
+            else:
+                print "There are no invisible galleries from " + str(year) 
+        elif choice == 4: #year invis
+            year = askPrevYears()
+            print "\nAre you sure you want to make all the galleries from %s invisible? (y/n)"%(year)
+            confirm = raw_input()
+    
+            if isY(confirm):
+                print #empty line
+                print makeYrInvis(year) 
+            else:
+                print "Deletion canceled"
+        elif choice == 4: #year vis
+            year = askPrevYears()
+            print "\nAre you sure you want to make all the galleries from %s visible? (y/n)"%(year)
+            confirm = raw_input()
+    
+            if isY(confirm):
+                print #empty line
+                print makeYrVis(year) 
+            else:
+                print "Deletion canceled"
+            
+            
+
+
     #Asks at the end if user would like to continue or exit
     print #empty line
     print "Would you like to do anything else? (y/n) "
@@ -109,11 +157,6 @@ def callAPI(url,sendingData):
     if (sendingData):
         return  json.loads(result)
     return result
-
-def getYears():
-    uri = "http://" + ip + "/getYears/%s"
-    url = uri%(key)
-    return callAPI(url, True)    
 
 def getCurrentGalleries():
     uri = "http://" + ip + "/getgalleries/%s"
@@ -158,35 +201,56 @@ def createGallery(gallery):
     print out
     return "Error, gallery not created"
 
-def archiveGalleries(year):
-    uri = "http://" + ip + "/archivegalleries/%s/%s"
-    url = uri%(key, year) 
+def makeGalInvisible(year, gallery):
+    uri = "http://" + ip + "/setVisibility/%s/%s/%s/%s"
+    url = uri%(key, 0, gallery, year)
     out = callAPI(url, False)
-    print out
     if out == "success":
-        return "\nThe galleries from " + year +" have been archived"
+        return "\n" + gallery + " is now invisible"
     print out
-    return "Error, galleries not archived"
+    return "Error, gallery not created"
 
-def unarchiveGalleries(year):
-    uri = "http://" + ip + "/unarchivegalleries/%s/%s"
-    url = uri%(key, year) 
+def makeGalVisible(year, gallery):
+    uri = "http://" + ip + "/setVisibility/%s/%s/%s/%s"
+    url = uri%(key, 1, gallery, year)
     out = callAPI(url, False)
-    print out
     if out == "success":
-        return "\nThe galleries from " + year +" have been unarchived"
+        return "\n" + gallery + " is now visible"
     print out
-    return "Error, galleries not unarchived"
+    return "Error, gallery not created"
 
-def getUnarchivedYears():
-    uri = "http://" + ip + "/getVisibleGalleries/%s"
-    url = uri%(key) 
-    return callAPI(url, True)
+def makeYrInvis(year):
+    uri = "http://" + ip + "/setVisibilityByYear/%s/%s/%s"
+    url = uri%(key, 0, year)
+    out = callAPI(url, False)
+    if out == "success":
+        return "\nAll galleries from " + str(year)  + " are now invisible"
+    print out
+    return "Error, gallery not created"
 
-def getArchivedYears():
-    uri = "http://" + ip + "/getInvisibleGalleries/%s"
-    url = uri%(key) 
-    return callAPI(url, True)
+def makeYrVis(year):
+    uri = "http://" + ip + "/setVisibilityByYear/%s/%s/%s"
+    url = uri%(key, 1, year)
+    out = callAPI(url, False)
+    if out == "success":
+        return "\nAll galleries from " + str(year) + " are now visible"
+    print out
+    return "Error, gallery not created"
+
+def getVisible(year):
+    uri = "http://" + ip + "/getVisibleGalleries/%s/%s"
+    url = uri%(key,year)
+    return callAPI(url, True)    
+
+def getInvisible(year):
+    uri = "http://" + ip + "/getInvisibleGalleries/%s/%s"
+    url = uri%(key,year)
+    return callAPI(url, True)    
+       
+def getYears():
+    uri = "http://" + ip + "/getYears/%s"
+    url = uri%(key)
+    return callAPI(url, True)    
 
 def askYear():
     print "\nWhat year is this from?"
@@ -194,6 +258,14 @@ def askYear():
     year = userInput(years)
     return years[year]
 
+def askPrevYears():
+    print "\nWhat year are you interested in?"
+    years = getYears()
+    current = datetime.now().year
+    years.remove(current)
+    year = userInput(years)
+    return years[year]
+    
 def askGallery(year):
     galleries = getGalleries(year)
     galNum = userInput(galleries)
