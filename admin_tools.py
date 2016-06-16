@@ -7,7 +7,6 @@ key = "mrdwisawesome"
 
 def start():
     print "If at any time you wish to leave, type 'exit'"
-    print "Type 'menu' to return to main menu"
     print "\nWelcome Mr. DW!"
     print "What would you like to do today?\n"
     main()
@@ -82,51 +81,83 @@ def main():
         print "Choose the number of the option you'd like to select:"
         choice = userInput(options)
         if choice == 0: #list visible
-            year = askPrevYears()
-            print "\nVisible galleries from " + str(year)
-            printList(getVisible(year))
+            years = getVisYears()
+            if len(years) != 0:
+                print "\nWhich year do you want to see the galleries from?"
+                year = years[userInput(years)]
+                print "\nVisible galleries from " + str(year)
+                printList(getVisible(year))
+            else:
+                print "There are no visible galleries" 
         elif choice == 1: #list invisible
-            year = askPrevYears()
-            print "\nInvisible galleries from " + str(year)
-            printList(getInvisible(year))
+            years = getInvisYears()
+            if len(years) != 0:
+                print "\nWhich year do you want to see the galleries from?"
+                year = years[userInput(years)]
+                print "\nInvisible galleries from " + str(year)
+                printList(getInvisible(year))
+            else:
+                print "There are no invisible galleries at the moment"
         elif choice == 2: #make gal invis
-            year = askPrevYears()
-            gals = getVisible(year)
-            if len(gals) != 0:
-                print "\nWhich gallery would you like to make invisible?"
-                gallery = userInput(gals)
-                print makeGalInvisible(year, gals[gallery])
+            years = getVisYears()
+            if len(years) != 0:
+                print "\nWhich year is the gallery you want to make invisible from?"
+                year = years[userInput(years)]
+                gals = getVisible(year)
+                if len(gals) != 0:
+                    print "\nWhich gallery would you like to make invisible?"
+                    gallery = userInput(gals)
+                    print "Invisilizing . . ."
+                    print makeGalInvisible(year, gals[gallery])
+                else:
+                    print "There are no visible galleries from " + str(year)
             else:
-                print "There are no visible galleries from " + str(year) 
+                print "There are no visible galleries to make invisible"
         elif choice == 3: #make gal vis
-            year = askPrevYears()
-            gals = getInvisible(year)
-            if len(gals) != 0:
-                print "\nWhich gallery would you like to make visible?"
-                gallery = userInput(years)
-                print makeGalVisible(year, gals[gallery])
+            years = getInvisYears()
+            if len(years) != 0:
+                print "\nWhich year is the gallery you want to make visible from?"
+                year = years[userInput(years)]
+                gals = getInvisible(year)
+                if len(gals) != 0:
+                    print "\nWhich gallery would you like to make visible?"
+                    gallery = userInput(gals)
+                    print "Visilizing . . ."
+                    print makeGalVisible(year, gals[gallery])
+                else:
+                    print "There are no invisible galleries from " + str(year)
             else:
-                print "There are no invisible galleries from " + str(year) 
+                print "There are no invisible galleries to make visible"
         elif choice == 4: #year invis
-            year = askPrevYears()
-            print "\nAre you sure you want to make all the galleries from %s invisible? (y/n)"%(year)
-            confirm = raw_input()
+            years = getVisYears()
+            if len(years) != 0:
+                print "\nWhich year do you want to make visible?"
+                year = years[userInput(years)]
+                print "\nAre you sure you want to make all the galleries from %s invisible? (y/n)"%(year)
+                confirm = raw_input()
     
-            if isY(confirm):
-                print #empty line
-                print makeYrInvis(year) 
+                if isY(confirm):
+                    print #empty line
+                    print makeYrInvis(year) 
+                else:
+                    print "Deletion canceled"
             else:
-                print "Deletion canceled"
-        elif choice == 4: #year vis
-            year = askPrevYears()
-            print "\nAre you sure you want to make all the galleries from %s visible? (y/n)"%(year)
-            confirm = raw_input()
+                print "There are no visible years to make invisible"
+        elif choice == 5: #year vis
+            years = getInvisYears()
+            if len(years) != 0:
+                print "\nWhich year do you want to make visible?"
+                year = years[userInput(years)]
+                print "\nAre you sure you want to make all the galleries from %s visible? (y/n)"%(year)
+                confirm = raw_input()
     
-            if isY(confirm):
-                print #empty line
-                print makeYrVis(year) 
+                if isY(confirm):
+                    print #empty line
+                    print makeYrVis(year) 
+                else:
+                    print "Deletion canceled"
             else:
-                print "Deletion canceled"
+                print "There are no invisible years to make visible"
             
             
 
@@ -252,6 +283,16 @@ def getYears():
     url = uri%(key)
     return callAPI(url, True)    
 
+def getVisYears():
+    uri = "http://" + ip + "/getVisibleYears/%s"
+    url = uri%(key)
+    return callAPI(url, True)    
+
+def getInvisYears():
+    uri = "http://" + ip + "/getInvisibleYears/%s"
+    url = uri%(key)
+    return callAPI(url, True)    
+
 def askYear():
     print "\nWhat year is this from?"
     years = getYears()
@@ -290,8 +331,6 @@ def userInput(options):
     inpt = raw_input()
     if inpt == "exit":
         exit()
-    if inpt == "menu":
-        main()
     validVals = strRange(len(options))
     while( inpt not in validVals ):
         print "\nI'm sorry, DW. I'm afraid I can't do that."
@@ -300,8 +339,6 @@ def userInput(options):
         inpt = raw_input()
         if inpt == "exit":
             exit()
-        if inpt == "menu":
-            main()
     return int(inpt)
 
         
