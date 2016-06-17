@@ -48,9 +48,12 @@ def main():
         printList(galleries)
 
     elif goal == 2: #add gallery
-        print "\nWhat would you like to name your new gallery?"
+        print "\nWhat YEAR would like to add your gallery to?"
+        year = raw_input()
+        #year = str(datetime.today().year) #uncomment this to always add to current year
+        print "\nWhat would you like to NAME your new gallery?"
         name = raw_input()
-        print createGallery(name)
+        print createGallery(year,name)
         
     elif goal == 3: #delete gallery
         year = askYear()
@@ -222,8 +225,7 @@ def deleteGallery(year, gallery):
     print out
     return "Error, gallery not deleted"
 
-def createGallery(gallery):
-    year = str(datetime.now().year)
+def createGallery(year, gallery):
     uri = "http://" + ip + "/creategallery/%s/%s/%s"
     url = uri%(key, year, gallery)
     out = callAPI(url, False)
