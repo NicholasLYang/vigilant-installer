@@ -2,7 +2,7 @@
 # assumes sshed into server with ROOT access
 mkdir /var/www
 apt-get update
-apt-get install Imagemagick python-pythonmagick python-pip sqlite emacs git
+apt-get install imagemagick python-pythonmagick python-pip sqlite emacs git
 apt install python-pip
 #echo "Making directories..."
 mkdir /var/www/vigilantwebgallery/
