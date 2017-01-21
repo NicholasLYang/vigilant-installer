@@ -205,9 +205,9 @@ def getImages(year, gallery):
     return callAPI(url, True) 
 
 def deleteImage(year, img, gallery):
-    img = urllib.quote_plus(img)
+    safeImg = urllib.quote_plus(img)
     uri = "http://" + ip + "/deleteimage/%s/%s/%s/%s"
-    url = uri%(key, year, gallery, img)
+    url = uri%(key, year, gallery, safeImg)
     out = callAPI(url, False)
     if out == "success":
         return "%s in %s has been deleted"%(img, gallery)
