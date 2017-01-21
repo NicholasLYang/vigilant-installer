@@ -3,9 +3,8 @@
 mkdir /var/www
 apt-get update
 apt-get install imagemagick python-pythonmagick python-pip sqlite emacs git
-apt install python-pip
 #echo "Making directories..."
-mkdir /var/www/vigilantwebgallery/
+mkdir -p /var/www/vigilantwebgallery/
 mkdir /var/www/vigilantwebgallery/vigilantwebgallery
 #secho "Setting up remote"
 cd /var

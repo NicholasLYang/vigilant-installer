@@ -12,7 +12,7 @@ def start():
     main()
 
 #Doesn't have greetings so that it can call itself
-def main():    
+def main():
     functions = [
         "Delete Image",
         "List Galleries",
@@ -21,10 +21,10 @@ def main():
         "List Years",
         "Visibility Options",
     ]
-    
+
     print "Choose the number of the option you'd like to select:"
     goal = userInput(functions)
-    
+
     if goal == 0: #delete image
         year = askYear()
         print "\nWhich gallery is the image in?"
@@ -54,7 +54,7 @@ def main():
         print "\nWhat would you like to NAME your new gallery?"
         name = raw_input()
         print createGallery(year,name)
-        
+
     elif goal == 3: #delete gallery
         year = askYear()
         print "\nWhich gallery would you like to delete?"
@@ -68,11 +68,11 @@ def main():
             print deleteGallery(year, gallery)
         else:
             print "Deletion canceled"
-        
-    elif goal == 4: #list 
+
+    elif goal == 4: #list
         print printList(getYears())
-        
-    elif goal == 5: #Visibility options 
+
+    elif goal == 5: #Visibility options
         options = [
             "List Visible Galleries",
             "List Invisible Galleries",
@@ -161,9 +161,6 @@ def main():
                     print "Deletion canceled"
             else:
                 print "There are no invisible years to make visible"
-            
-            
-
 
     #Asks at the end if user would like to continue or exit
     print #empty line
@@ -171,8 +168,8 @@ def main():
     confirm = raw_input()
     if isY(confirm):
         print #new line
-        main()        
-    
+        main()
+
 
 def printList(coll):
     for index, item in enumerate(coll):
@@ -273,27 +270,27 @@ def makeYrVis(year):
 def getVisible(year):
     uri = "http://" + ip + "/getVisibleGalleries/%s/%s"
     url = uri%(key,year)
-    return callAPI(url, True)    
+    return callAPI(url, True)
 
 def getInvisible(year):
     uri = "http://" + ip + "/getInvisibleGalleries/%s/%s"
     url = uri%(key,year)
-    return callAPI(url, True)    
-       
+    return callAPI(url, True)
+
 def getYears():
     uri = "http://" + ip + "/getYears/%s"
     url = uri%(key)
-    return callAPI(url, True)    
+    return callAPI(url, True)
 
 def getVisYears():
     uri = "http://" + ip + "/getVisibleYears/%s"
     url = uri%(key)
-    return callAPI(url, True)    
+    return callAPI(url, True)
 
 def getInvisYears():
     uri = "http://" + ip + "/getInvisibleYears/%s"
     url = uri%(key)
-    return callAPI(url, True)    
+    return callAPI(url, True)
 
 def askYear():
     print "\nWhat year is this from?"
@@ -308,7 +305,7 @@ def askPrevYears():
     years.remove(current)
     year = userInput(years)
     return years[year]
-    
+
 def askGallery(year):
     galleries = getGalleries(year)
     galNum = userInput(galleries)
@@ -343,7 +340,6 @@ def userInput(options):
             exit()
     return int(inpt)
 
-        
 start()
 
 
