@@ -1,4 +1,4 @@
-import urllib2, json
+import urllib2, json, urllib
 from sys import exit
 from datetime import datetime
 
@@ -205,6 +205,7 @@ def getImages(year, gallery):
     return callAPI(url, True) 
 
 def deleteImage(year, img, gallery):
+    img = urllib.quote_plus(img)
     uri = "http://" + ip + "/deleteimage/%s/%s/%s/%s"
     url = uri%(key, year, gallery, img)
     out = callAPI(url, False)
